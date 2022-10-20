@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout recursive
+      uses: actions/checkout@v2
+
+    - name: Build
+      uses: aevea/action-kaniko@master
+      with:
+        image: willguitaradmfar/jump
+        tag_with_latest: true
+        tag: ${{ github.sha }}
+        username: ${{ secrets.CI_AUTH_REGISTRY_USERNAME }}
+        password: ${{ secrets.CI_AUTH_REGISTRY_PASSWORD }}
+        build_file: Dockerfile
+        path: .
